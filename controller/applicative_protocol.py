@@ -36,4 +36,6 @@ class ApplicativeProtocol:
 
             # Indique les nouveaux fichiers d'une machine
             case 4005:
-                print("Indique les nouveaux fichiers d'une machine")
+                self.__file_manager.add_file(port_number, ip_address, data)
+                return "Le serveur centralisé a ajouté le nouveau fichier partagé"
+
