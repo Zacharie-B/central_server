@@ -11,15 +11,16 @@ class FileManager:
         file_list = files.split(';')
         for file in file_list:
             f = file.split(',')
+            print(f)
             file_description = FileDescription(f[0], f[1])
             files_desc.append(file_description)
 
         local_server = LocalServer(port_number, files_desc, ip_address)
         self.__local_servers.append(local_server)
-        print(self.__local_servers[0].__str__())
+        # print(self.__local_servers[0].__str__())
 
     def add_file(self, string):
         pass
 
-    def get_local_server(self):
+    def get_local_servers(self):
         return self.__local_servers

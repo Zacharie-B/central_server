@@ -14,10 +14,9 @@ class Threads(Thread):
             data = self.con.recv(2048)
             msg = data.decode()
             print("Le serveur a reçu des données de :", msg)
-            self.applicative_protocol.sortInputMessage(msg)
 
-            msg = bytes("Entrez la réponse du serveur ou exit pour sortir:",
-                        'utf-8')
+            response = self.applicative_protocol.sortInputMessage(msg)
+            msg = bytes(response, 'utf-8')
             print(msg)
             if msg == 'exit':
                 break

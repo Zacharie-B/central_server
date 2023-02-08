@@ -1,36 +1,27 @@
-# DOCUMENTS_NAME = {"1": {'fiche de paie': 'fiche de paie de Zacharie Baril',
-#                       'rapport infra réseau': 'rapport sur l\'infrastructure de l\'UVSQ',
-#                       'rapport SDN': 'rapport sur la technologie SDN pour '
-#                                      'automatiser les réseaux'},
-#                   "2": {'rapport Active Directory': 'rapport sur le fonctionnement général de l\'Active Directory',
-#                       'rapport stockiométrique': 'rapport sur la quantité '
-#                                                  'd\'essence ou de diesel à injecter par rapport à la quantité d\'air'},
-#                   "3": {'moteur thermique': 'caractéristiques d\'un moteur thermique',
-#                       'moteur essence': 'caractéristiques d\'un moteur essence',
-#                       'moteur diesel': 'caractéristiques d\'un moteur diesel',
-#                       'moteur éléctrique': 'caractéristiques d\'un moteur électrique'}}
-from file_manager import FileManager
+from use_case.file_manager import FileManager
 
 
 class SearchingFiles:
-    def __init__(self):
+    def __init__(self, file_manager):
         self.__result_search = {}
-        self.file_manager = FileManager()
+        self.__file_manager = file_manager
 
     # Recherche les fichiers qui contiennent les mots clés indiquées dans leur
     # description
     def searching_files(self, key_words: list[str]):
-
-        for machine, files in DOCUMENTS_NAME.items():
-            for file_name, description in files.items():
-                for word in key_words:
-                    if word.lower() in description.lower():
-                        if machine in self.__result_search:
-                            self.__result_search[machine][file_name] = description
-                        else:
-                            files_dict = {}
-                            files[file_name] = description
-                            self.__result_search[machine] = files_dict
+        server = self.__file_manager.get_local_servers()[0]
+        for file in server.get_files_description():
+            for word in key_words:
+                fd = file.get_description()
+                fn = file.get_file_name()
+                if word.lower() in fd.lower():
+                    ip = server.get_ip_address()
+                    if ip in self.__result_search:
+                        self.__result_search[ip][fn] = fd
+                    else:
+                        files_dict = {fn: fd}
+                        print(files_dict)
+                        self.__result_search[ip] = files_dict
 
         self.__result_search = self.sort_result()
         return self.__result_search
@@ -39,3 +30,7 @@ class SearchingFiles:
     def sort_result(self):
         result_sorted = sorted(self.__result_search.items(), key=lambda t: t[0])
         return result_sorted
+
+    # Nettoie le précédent résultat avant une nouvelle recherche
+    def clean_result_search(self):
+        self.__result_search = ""

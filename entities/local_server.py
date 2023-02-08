@@ -1,10 +1,8 @@
 from entities.remote_machine import RemoteMachine
-from entities.file_description import FileDescription
 
 
 class LocalServer(RemoteMachine):
-    def __init__(self, port_number, files_description: list(FileDescription),
-            ip_address="127.0.0.1"):
+    def __init__(self, port_number, files_description: list, ip_address="127.0.0.1"):
         self.__port_number = port_number
         self.__files_description = files_description
         self.__ip_address = ip_address
@@ -16,7 +14,7 @@ class LocalServer(RemoteMachine):
         return self.__port_number
 
     def get_files_description(self):
-        return self.__files_description_description
+        return self.__files_description
 
     def add_file(self, file):
         self.__files_description.append(file)
@@ -25,6 +23,9 @@ class LocalServer(RemoteMachine):
         self.__files_description.remove(file)
 
     def __str__(self):
-        str = "La machine à IP " + self.__ip_address + "et le port " + \
-               self.__port_number + " possède les fichiers : "
+        string = "La machine à IP " + self.__ip_address + " et le port " + \
+                 str(self.__port_number) + " possède les fichiers : "
+        for file in self.__files_description:
+            string += "\n" + file.__str__()
+        return string
 

@@ -3,16 +3,29 @@ from controller.applicative_protocol import ApplicativeProtocol
 
 app_proto = ApplicativeProtocol()
 
+app_proto.sortInputMessage('4001 fiche de paie,fiche de paie de Zacharie Baril;'
+                           'rapport SDN,rapport sur la technologie SDN pour automatiser les '
+                           'réseaux', 5100, '127.0.0.1')
+
 
 def test_sort_code():
     a = "azerty"
-    app_proto.sortInputMessage("1001 fsdf")
-    app_proto.sortInputMessage("4001 erz")
-    app_proto.sortInputMessage("4003 ezr")
-    app_proto.sortInputMessage("4005 ezrz")
+    print(app_proto.sortInputMessage("1001 fsdf", 2, 'ee'))
+    print(app_proto.sortInputMessage("4001 ezr,az;ae,ar", 2, 'ee'))
+    print(app_proto.sortInputMessage("4003 az", 2, 'ee'))
+    print(app_proto.sortInputMessage("4005 ezrz", 2, 'ee'))
     assert a
 
 
 def test_searching():
-    result = app_proto.sortInputMessage("4003 rapport moteur")
+    result = app_proto.sortInputMessage("4003 a rapport", 2, "ee")
+    print(result)
     assert result
+
+
+def test_create_local_server():
+    a = 1
+    app_proto.sortInputMessage('4001 fiche de paie,fiche de paie de Zacharie Baril;'
+                               'rapport SDN,rapport sur la technologie SDN pour automatiser les '
+                               'réseaux', 5100, '127.0.0.1')
+    assert a
