@@ -1,5 +1,5 @@
 from threading import Thread
-from applicative_protocol import ApplicativeProtocol
+from controller.applicative_protocol import ApplicativeProtocol
 
 
 class Threads(Thread):
@@ -7,18 +7,17 @@ class Threads(Thread):
         Thread.__init__(self)
         self.applicative_protocol = ApplicativeProtocol()
         self.con = con
-        print("[+] Nouveau thread démarré pour " + ip_address + ":" + str(port_number))
+        self.ip_address = ip_address
+        self.port_number = port_number
+        print("[+] Nouveau thread démarré pour " + self.ip_address + ":" + str(self.port_number))
 
     def run(self):
         while True:
             data = self.con.recv(2048)
-            msg = data.decode()
-            print("Le serveur a reçu des données de :", msg)
+            msg = data.decode('utf-8')
+            print("Serveur a reçu des données de :", msg)
 
-            response = self.applicative_protocol.sortInputMessage(msg)
-            msg = bytes(response, 'utf-8')
-            print(msg)
-            if msg == 'exit':
-                break
-            self.con.send(msg)
+            response = self.applicative_protocol.sortInputMessage(msg, self.port_number,
+                                                                  self.ip_address)
+            self.con.send(response)
 

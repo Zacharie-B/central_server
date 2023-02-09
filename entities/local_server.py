@@ -2,7 +2,7 @@ from entities.remote_machine import RemoteMachine
 
 
 class LocalServer(RemoteMachine):
-    def __init__(self, port_number, files_description: list, ip_address="127.0.0.1"):
+    def __init__(self, port_number, files_description, ip_address="127.0.0.1"):
         self.__port_number = port_number
         self.__files_description = files_description
         self.__ip_address = ip_address
@@ -24,8 +24,7 @@ class LocalServer(RemoteMachine):
 
     def __str__(self):
         string = "La machine à IP " + self.__ip_address + " et le port " + \
-                 str(self.__port_number) + " possède les fichiers : "
+                 str(self.__port_number) + "\nIl possède les fichiers : "
         for file in self.__files_description:
             string += "\n" + file.__str__()
         return string
-
